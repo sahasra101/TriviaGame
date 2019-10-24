@@ -1,0 +1,14 @@
+body {
+    background: url(../images/background0.png) repeat;
+    height: 100%;
+    width: 100%;
+}
+
+.maindiv {
+    /* display: inline-block; */
+    margin-left: 20%;
+}
+
+.card-body {
+    background: red;
+}

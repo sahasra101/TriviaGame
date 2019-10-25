@@ -9,6 +9,6 @@ body {
     margin-left: 20%;
 }
 
-.card-body, #submit, #timerDiv, #startbtnDiv {
+.card-body, #submit, #submitDiv, #timerDiv, #startbtnDiv, #instructionsDiv {
     background: red;
 }

@@ -81,8 +81,8 @@ var allquestions = [
         answers: {
             a: "x-ray vision",
             b: "telekinesis",
-            c: "superstrength",
-            d: "heatvision"
+            c: "superhuman strength",
+            d: "heat vision"
         },
         correctAnswer: "b"
     },
@@ -129,15 +129,19 @@ console.log(allquestions[0].answers.c);
 console.log(allquestions[0].answers.d);
 console.log(allquestions[0].correctAnswer);
 
+//my initial thought was to create separate Div's for each component of the question/answer
 // var questionDiv = document.getElementById("questiondiv");
 // var answerADiv = document.getElementById("choiceA");
 // var answerBDiv = document.getElementById("choiceB");
 // var answerCDiv = document.getElementById("choiceC");
 // var answerDDiv = document.getElementById("choiceD");
 
+
+// variables for timer
 var currentTime = 181;
 var timerrunning = false;
 
+// borrowed timerConverter from class activity to set up in minutes and seconds format
 function timeConverter(t) {
     var minutes = Math.floor(t / 60);
     var seconds = t - (minutes * 60);
@@ -161,7 +165,7 @@ $("#startquiz").on("click", startTimer);
 
 function startTimer() {
     if (!timerrunning) {
-        currentTime = 11;
+        currentTime = 181;
         setInterval(timer, 1000);
         $("#startbtnDiv").hide();
         buildQuiz();
@@ -178,7 +182,6 @@ function timer() {
         $("#timer").html(`<h3>You ran out of time!</h3>`)
         showResults();
     }
-
 }
 
 function buildQuiz() {
@@ -191,19 +194,18 @@ function buildQuiz() {
     // currentQuestion.question at questionNumber 0 = questions
     allquestions.forEach(
         function (currentQuestion, questionNumber) {
-            //innerHTML array of answer choices with radio button for each letter using for loop
+            //innerHTML string of answer choices with radio button for each letter using for each loop
             var answers = [];
             for (letter in currentQuestion.answers) {
                 answers.push(
                     `<h3><label>
-              <input type="radio" name="question${questionNumber}" value="${letter}">
-              ${letter} :
-              ${currentQuestion.answers[letter]} 
-            </label></h3>`
+                    <input type="radio" name="question${questionNumber}" value="${letter}">
+                    ${letter} :
+                    ${currentQuestion.answers[letter]} 
+                    </label></h3>`
                 );
             }
-
-            // push this question and its answers to the output array as innerHTML
+            // push this question and its answers to the output string as innerHTML
             MCQuesList.push(
                 `<div class="question"><h2> ${currentQuestion.question} </h2></div>
           <div class="answers"> ${answers.join(' ')} </div>
@@ -213,25 +215,11 @@ function buildQuiz() {
     );
 
     $("#quiz").html(MCQuesList.join(''));
-    $("#submitDiv").show();
+    $("#submitDiv").show(); //show submit button once the quiz is revealed.
 
-
-    console.log(MCQuesList); // to confirm innerHTML text
+//    console.log(MCQuesList); // to confirm innerHTML text
 }
-
-// const quizContainer = document.getElementById('quiz');
-// const resultsContainer = document.getElementById('results');
-// const submitButton = document.getElementById('submit');
-
-// grade the quiz
-// function gradeQuiz(){
-
-//     // gather answer containers from our quiz
-//     var answerContainers = quizContainer.querySelectorAll('.answers');
-
-//     // keep track of user's answers
-//     let numCorrect = 0;
-
+//pressing the submit button calls the showResults function
 $("#submit").click(function () {
     showResults();
 });
@@ -240,22 +228,23 @@ function showResults() {
     $("#quiz").hide();
     $("#timerDiv").hide();
     $("#submitDiv").hide();
+    $("#instructionsDiv").hide();
 
 
-    var allanswers = document.querySelectorAll('.answers');
-    console.log(allanswers);
-
-    // keep track of user's answers
+    // keep track of user's results
     var numbCorrectAnswers = 0;
     var unansweredQuestions = 0;
     var incorrectAnswers = 0;
 
     // for each question...
+    var allanswers = document.querySelectorAll('.answers');
+    console.log(allanswers);
     allquestions.forEach((currentQuestion, questionNumber) => {
-        // find user selected answer
+
         var answerContainer = allanswers[questionNumber];
+                // find user selected answer
         var selector = 'input[name=question' + questionNumber + ']:checked';
-        console.log(selector);
+        console.log(selector);  // which radio button was selected
         var userAnswer = (answerContainer.querySelector(selector) || {}).value;
 
         console.log(userAnswer);
@@ -270,17 +259,15 @@ function showResults() {
         } else {
             incorrectAnswers++;
         }
-
     });
 
-    // show number of correct answers out of total
+    // show number of correct answers out of total in the results Div
     $("#results").html(`<h4>You got ${numbCorrectAnswers} out of ${allquestions.length} questions right!</h4>`);
     $("#results").append(`<h4>You got ${incorrectAnswers} question(s) wrong.</h4>`);
-    $("#results").append(`<h4>You did not answer ${unansweredQuestions} questions.</h4>`);
+    $("#results").append(`<h4>You did not answer ${unansweredQuestions} question(s).</h4>`);
 
 
-
-
+// for double checking 
     console.log("number correct: " + numbCorrectAnswers);
     console.log("number not answered: " + unansweredQuestions);
     console.log("number incorrect: " + incorrectAnswers);

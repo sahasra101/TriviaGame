@@ -1,6 +1,4 @@
-$(document).ready(function () {
-
-    //array of questions
+//array of questions
     // questions[0].question = 1st question
     // questions[0].answers.a = answer option a
     // questions[0].answers.b = answer option b
@@ -275,4 +273,3 @@ $(document).ready(function () {
         console.log("number not answered: " + unansweredQuestions);
         console.log("number incorrect: " + incorrectAnswers);
     }
-}    
